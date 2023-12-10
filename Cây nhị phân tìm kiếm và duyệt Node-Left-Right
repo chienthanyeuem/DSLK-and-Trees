@@ -1,0 +1,58 @@
+struct node {
+	int data;
+	struct node* right;
+	struct node* left;
+};
+
+typedef node* Tree;
+
+void createTree(Tree& root) {
+	root = NULL; //Cay rong
+}
+
+node* makeNode(int x) {
+	node* newNode = new node();
+	newNode->right = NULL;
+	newNode->left = NULL;
+	newNode->data = x;
+	return newNode;
+}
+
+void addNode(Tree& root, int x) {
+	if (root == NULL) {/// Neu cay rong khoi tao phan tu goc
+		node* newNode = makeNode(x);
+		root = newNode;
+	}
+	else{// Cay co ton tai phan tu
+		if (x < root->data) {
+			addNode(root->left, x);
+		}
+		else if (x > root->data) {
+			addNode(root->right, x);
+		}
+	}
+}
+
+void print_NLR(Tree& root) {
+	if (root != NULL) {// duyet den khi khong con phan tu
+		cout << root->data << " ";
+		print_NLR(root->left);
+		print_NLR(root->right);
+	}
+}
+
+void nhap(Tree& root) {
+	while (1) {
+		int x; cin >> x;
+		if (x == 0) break;
+		addNode(root, x);
+	}
+	print_NLR(root);
+}
+
+
+void solve() {
+	Tree mytree;
+	createTree(mytree);
+	nhap(mytree);
+}
