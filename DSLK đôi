@@ -1,0 +1,68 @@
+struct node {
+	int data;
+	struct node* next;
+	struct node* prev;
+};
+
+node *makeNode(int x) {
+	node* newNode = new node();
+	newNode->data = x;
+	newNode->prev = NULL;
+	newNode->next = NULL;
+	return newNode;
+}
+
+void themdau(node** head, int x) {
+	node* newNode = makeNode(x);
+	newNode->next = *head;
+	if(*head != NULL)
+		(*head)->prev = newNode;
+	*head = newNode;
+}
+
+void themcuoi(node** head, int x) {
+	node* newNode = makeNode(x);
+	if (*head == NULL) {
+		*head = newNode;
+		return;
+	}
+	node* tmp = *head;
+	while (tmp->next != NULL) {
+		tmp = tmp->next;
+	}
+	tmp->next = newNode;
+	newNode->prev = tmp;
+}
+
+int sz(node* head) {
+	int cnt = 0;
+	while (head != NULL) {
+		head = head->next;
+		++cnt;
+	}
+	return cnt;
+}
+
+void them(node** head, int x, int k) {
+	node* newNode = makeNode(x);
+	if (k == 1) {
+		themdau(head, x);
+		return;
+	}
+	else if (k < 1 || k > sz(*head) + 1) return;
+	node* tmp = *head;
+	FOR(i, 1, k - 1) {
+		tmp = tmp->next;
+	}
+	newNode->next = tmp;
+	tmp->prev->next = newNode;
+	newNode->prev = tmp->prev;
+	tmp->prev = newNode;
+}
+
+void duyet(node* head){
+	while (head != NULL) {
+		cout << head->data << " ";
+		head = head->next;
+	}
+}
