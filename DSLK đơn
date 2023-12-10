@@ -1,0 +1,99 @@
+struct node {
+	int data;
+	struct node* next;
+};
+//Bản thân 1 node là 1 con trỏ gồm 2 phần
+//data và link 
+
+node* makeNode(int x) {
+	node* newNode = new node();
+	newNode->next = NULL;
+	newNode->data = x;
+	return newNode;
+}
+
+int size(node* head) {
+	int cnt = 0;
+	while (head != NULL) {
+		++cnt;
+		head = head->next;
+	}
+	return cnt;
+}
+
+void iterate(node* head) {
+	while (head != NULL) {
+		cout << head->data << " ";
+		head = head->next;
+	}
+}
+
+void pushFront(node** head, int x) {
+	node* newNode = makeNode(x);
+	newNode->next = *head;
+	*head = newNode;
+}
+
+void pushBack(node** head, int x) {
+	node* newNode = makeNode(x);
+	if (*head == NULL) {
+		*head = newNode;
+		return;
+	}
+	node* tmp = *head;
+	while (tmp->next != NULL) {
+		tmp = tmp->next;
+	}
+	tmp->next = newNode;
+}
+
+void insert(node** head, int k, int x) {
+	int sz = size(*head);
+	if (k < 1 || k > sz + 1) return;
+	if (k == 1) pushFront(head, x);
+	node* tmp = *head;
+	node* newNode = makeNode(x);
+	FOR(i, 1, k - 2) {
+		tmp = tmp->next;
+	}
+	newNode->next = tmp->next;
+	tmp->next = newNode;
+}
+
+void popFront(node** head) {
+	if (*head == NULL) return;
+	node* tmp = *head;
+	*head = tmp->next;
+	delete tmp;
+}
+
+void popBack(node** head) {
+	node* tmp = *head;
+	if (*head == NULL) return;
+	if(tmp->next == NULL) {
+		*head = NULL;
+		delete tmp;
+		return;
+	}
+	while (tmp->next->next != NULL) {
+		tmp = tmp->next;
+	}
+	node* last = tmp->next;
+	tmp->next = NULL;
+	delete last;
+}
+
+void popMiddle(node** head, int k) {
+	int sz = size(*head);
+	if (k < 1 || k > sz) return;
+	if (k == 1) popFront(head);
+	else {
+		node* tmp = *head;
+		FOR(i, 1, k - 2) {
+			tmp = tmp->next;
+		}
+		node* era = tmp->next;
+		tmp->next = era->next;
+		delete era;
+	}
+}
