@@ -1,0 +1,89 @@
+struct node {
+	int data;
+	struct node* right;
+	struct node* left;
+};
+
+typedef node* Tree;
+
+void createTree(Tree& root) {
+	root = NULL; //Cay rong
+}
+
+node* makeNode(int x) {
+	node* newNode = new node();
+	newNode->right = NULL;
+	newNode->left = NULL;
+	newNode->data = x;
+	return newNode;
+}
+
+void addNode(Tree& root, int u, int v, char c) {
+	if (root == NULL) {/// Neu cay rong khoi tao phan tu goc
+		node* newNode = makeNode(u);
+		root = newNode;
+		if (c == 'L') root->left = makeNode(v);
+		else root->right = makeNode(v);
+	}
+	else {// Cay co ton tai phan tu
+		if (root->data == u) {
+			node* newNode = makeNode(v);
+			if (c == 'L') root->left = newNode;
+			else root->right = newNode;
+		}
+		else {
+			if (root->left != NULL) addNode(root->left, u, v, c);
+			if (root->right != NULL) addNode(root->right, u, v, c);
+		}
+	}
+}
+
+void print(Tree T) {
+	queue<Tree> q;
+	q.push(T);
+	while (q.size()) {
+		Tree t = q.front();
+		q.pop();
+		cout << t->data << " ";
+		if (t->left != NULL) q.push(t->left);
+		if (t->right != NULL) q.push(t->right);
+	}
+}
+
+void print_NLR(Tree& root) {
+	if (root != NULL) {// duyet den khi khong con phan tu
+		cout << root->data << " ";
+		print_NLR(root->left);
+		print_NLR(root->right);
+	}
+}
+
+//void nhap(Tree& root) {
+//	while (1) {
+//		int x; cin >> x;
+//		if (x == 0) break;
+//		addNode(root, x);
+//	}
+//	print_NLR(root);
+//}
+
+
+void solve() {
+	Tree mytree;
+	createTree(mytree);
+	int n; cin >> n;
+	FOR(i, 1, n) {
+		int x, y;
+		char z;
+		cin >> x >> y >> z;
+		addNode(mytree, x, y, z);
+	}
+	print(mytree);
+}
+
+int main() {
+	run() {
+		solve();
+		cout << endl;
+	}
+}
